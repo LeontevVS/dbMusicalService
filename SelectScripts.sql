@@ -10,7 +10,7 @@ WHERE duration = (SELECT max(duration) FROM songs);
 SELECT 
 	name
 FROM songs
-WHERE duration >= 3.5;
+WHERE duration >= '00:03:30';
 
 --3. Названия сборников, вышедших в период с 2018 по 2020 год включительно.
 SELECT 
@@ -28,7 +28,7 @@ WHERE length(name) - length(replace(name, ' ', '')) = 0;
 SELECT 
 	name
 FROM songs
-WHERE lower(name) LIKE '%my%' OR lower(name) LIKE '%мой%';
+WHERE string_to_array(lower(name), ' ') && ARRAY['my', 'мой']
 
 
 --ЗАДАНИЕ 3
@@ -51,13 +51,10 @@ LEFT JOIN artistgenres ag ON g.id = ag.genreid
 GROUP BY name;
 
 --2. Количество треков, вошедших в альбомы 2019–2020 годов.
-SELECT
-	a.name,
-	count(s.*)
+SELECT count(s.*)
 FROM albums a
 LEFT JOIN songs s ON s.albumid = a.id
-WHERE a."Year" BETWEEN 2019 AND 2020
-GROUP BY a.name;
+WHERE a."Year" BETWEEN 2019 AND 2020;
 
 --3. Средняя продолжительность треков по каждому альбому.
 SELECT
